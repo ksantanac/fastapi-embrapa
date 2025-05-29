@@ -10,13 +10,18 @@ from controllers import (
     exportacao_controller
 ) 
 
-# Carrega o YAML
-def load_openapi():
-    BASE_DIR = Path(__file__).resolve().parent.parent.parent
-    # DATA_DIR = BASE_DIR / "fastapi-embrapa"
-    DATA_DIR = BASE_DIR / "API Tech Challenge"
+# # Carrega o YAML
+# def load_openapi():
+#     BASE_DIR = Path(__file__).resolve().parent.parent.parent
+#     # DATA_DIR = BASE_DIR / "fastapi-embrapa"
+#     DATA_DIR = BASE_DIR / "API Tech Challenge"
 
-    with open(DATA_DIR / "openapi.yaml", encoding='utf-8') as f:
+#     with open(DATA_DIR / "openapi.yaml", encoding='utf-8') as f:
+#         return yaml.safe_load(f)
+    
+def load_openapi():
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    with open(BASE_DIR / "openapi.yaml", encoding='utf-8') as f:
         return yaml.safe_load(f)
 
 app = FastAPI(

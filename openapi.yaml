@@ -5,8 +5,9 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://127.0.0.1:8000/api/v1
-    description: Servidor local
+  - url: https://embrapa-fiap.onrender.com/api/v1
+    description: Servidor Render
+
 
 security:
   - BearerAuth: []  # Isso força o Swagger UI a mostrar o botão Authorize
