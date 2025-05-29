@@ -14,7 +14,7 @@ from controllers import (
 def load_openapi():
     BASE_DIR = Path(__file__).resolve().parent.parent.parent
     # DATA_DIR = BASE_DIR / "fastapi-embrapa"
-    DATA_DIR = BASE_DIR / "API Tech Challenge"
+    DATA_DIR = BASE_DIR / "fastapi-embrapa"
 
     with open(DATA_DIR / "openapi.yaml", encoding='utf-8') as f:
         return yaml.safe_load(f)
