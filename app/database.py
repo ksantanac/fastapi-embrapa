@@ -17,9 +17,6 @@ engine = create_engine(DATABASE_URL)
 
 # Cria uma fábrica de sessões
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Base para os modelos declarativos
-# Todas as classes de modelo herdarão desta classe
 Base = declarative_base()
 
 # Função geradora que fornece sessões de banco de dados
@@ -27,9 +24,6 @@ def get_db():
     # Cria uma nova sessão
     db = SessionLocal()
     try:
-        # Entrega a sessão para uso
         yield db
     finally:
-        # Garante que a sessão será fechada após o uso
-        # Mesmo se ocorrer um erro durante a operação
         db.close()
