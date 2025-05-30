@@ -1,3 +1,5 @@
+from fastapi.middleware.cors import CORSMiddleware
+
 from fastapi import FastAPI, APIRouter
 from pathlib import Path
 import yaml
@@ -18,7 +20,8 @@ from controllers import (
 
 #     with open(DATA_DIR / "openapi.yaml", encoding='utf-8') as f:
 #         return yaml.safe_load(f)
-    
+
+# Para prod
 def load_openapi():
     BASE_DIR = Path(__file__).resolve().parent.parent
     with open(BASE_DIR / "openapi.yaml", encoding='utf-8') as f:
@@ -31,6 +34,15 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json"
+)
+
+# Libera CORS para todas as origens - PROD
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # roteador principal

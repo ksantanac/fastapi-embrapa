@@ -19,15 +19,7 @@ A API foi desenvolvida em **FastAPI** com autenticação JWT e deploy via **Rend
 
 ## 🧩 Arquitetura e Fluxo
 
-```mermaid
-graph TD
-    A[Usuário] -->|HTTP + JWT| B[API FastAPI]
-    B --> C[Valida Token no PostgreSQL]
-    C -->|OK| D[Web Scraping Embrapa]
-    D --> E[Processamento dos Dados]
-    E --> F[Resposta JSON ou CSV]
-    C -->|Falha| X[Erro 401]
-```
+![Diagrama de Arquitetura](dfd.png)
 
 ---
 
