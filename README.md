@@ -147,7 +147,8 @@ Não se esqueça de gerar e usar o token JWT antes de acessar os dados.
 
 ## 🧑‍💻 Desenvolvido por
 
-- `Kaue Santana 
+- `Kauê Braz - RM362598`
+- `Kaue Santana - RM363168`
 
 - FIAP Tech Challenge 2025  
 Projeto acadêmico, sem fins lucrativos.
