@@ -196,7 +196,7 @@ paths:
             format: int32
             minimum: 1970
             maximum: 2023
-            example: 2005
+            example: 2003
       responses:
         '200':
           description: "Dados de produção encontrados"
@@ -237,7 +237,6 @@ paths:
       security:
         - BearerAuth: []
 
-
   # PROCESSAMENTO VINIFERAS BY YEAR
   /processamento/viniferas/{year}:
     get:
@@ -270,28 +269,28 @@ paths:
           description: "Erro no servidor"
 
   # VINIFERAS RANGE
-  /processamento/viniferas/{year_start}/{year_end}:
+  /processamento/viniferas:
     get:
       tags: ["Processamento"]
       summary: "Dados de processamento de uvas viníferas por intervalo"
       description: "Retorna dados de processamento de uvas viníferas para um intervalo de anos"
       parameters:
-        - name: year_start
-          in: path
+        - name: ano_inicio
+          in: query
           required: true
           schema:
             type: integer
             minimum: 1970
             maximum: 2023
             example: 2010
-        - name: year_end
-          in: path
+        - name: ano_fim
+          in: query
           required: true
           schema:
             type: integer
             minimum: 1970
             maximum: 2023
-            example: 2020
+            example: 2012
       security:
         - BearerAuth: []
       responses:
@@ -302,7 +301,6 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ProcessamentoItem"
         400:
           description: "Intervalo inválido"
           content:
@@ -348,28 +346,28 @@ paths:
           description: "Erro no servidor"
 
   # AMERICANAS RANGE
-  /processamento/americanas/{year_start}/{year_end}:
+  /processamento/americanas:
     get:
       tags: ["Processamento"]
       summary: "Dados de processamento de uvas americanas por intervalo"
       description: "Retorna dados de processamento de uvas americanas para um intervalo de anos"
       parameters:
-        - name: year_start
-          in: path
+        - name: ano_inicio
+          in: query
           required: true
           schema:
             type: integer
             minimum: 1970
             maximum: 2023
             example: 2010
-        - name: year_end
-          in: path
+        - name: ano_fim
+          in: query
           required: true
           schema:
             type: integer
             minimum: 1970
             maximum: 2023
-            example: 2020
+            example: 2012
       security:
         - BearerAuth: []
       responses:
@@ -380,7 +378,6 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ProcessamentoItem"
         400:
           description: "Intervalo inválido"
         500:
@@ -418,28 +415,28 @@ paths:
           description: "Erro no servidor"
 
   # UVAS RANGE
-  /processamento/uvas/{year_start}/{year_end}:
+  /processamento/uvas:
     get:
       tags: ["Processamento"]
       summary: "Dados de processamento de uvas de mesa por intervalo"
       description: "Retorna dados de processamento de uvas de mesa para um intervalo de anos"
       parameters:
-        - name: year_start
-          in: path
+        - name: ano_inicio
+          in: query
           required: true
           schema:
             type: integer
             minimum: 1970
             maximum: 2023
             example: 2010
-        - name: year_end
-          in: path
+        - name: ano_fim
+          in: query
           required: true
           schema:
             type: integer
             minimum: 1970
             maximum: 2023
-            example: 2020
+            example: 2012
       security:
         - BearerAuth: []
       responses:
@@ -458,61 +455,12 @@ paths:
 
   # Sem classificação por ano
   /processamento/semClass/{year}:
-  get:
-    tags: ["Processamento"]
-    summary: "Dados sem classificação por ano específico"
-    description: "Retorna dados sem classificação específica para um ano determinado"
-    parameters:
-      - name: year
-        in: path
-        required: true
-        schema:
-          type: integer
-          minimum: 1970
-          maximum: 2023
-          example: 2020
-    security:
-      - BearerAuth: []
-    responses:
-      200:
-        description: "Dados encontrados"
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/SemClassItem"
-      400:
-        description: "Ano inválido"
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                detail:
-                  type: string
-                  example: "Ano 3000 não encontrado. Anos disponíveis: 1970-2023"
-      401:
-        description: "Não autorizado"
-      500:
-        description: "Erro interno no servidor"
-
-  # Sem classificação range
-  /processamento/semClass/{year_start}/{year_end}:
     get:
       tags: ["Processamento"]
-      summary: "Dados sem classificação por intervalo de anos"
-      description: "Retorna dados sem classificação específica para um intervalo de anos (inclusive)"
+      summary: "Dados sem classificação por ano específico"
+      description: "Retorna dados sem classificação específica para um ano determinado"
       parameters:
-        - name: year_start
-          in: path
-          required: true
-          schema:
-            type: integer
-            minimum: 1970
-            maximum: 2023
-            example: 2010
-        - name: year_end
+        - name: year
           in: path
           required: true
           schema:
@@ -520,6 +468,55 @@ paths:
             minimum: 1970
             maximum: 2023
             example: 2020
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: "Dados encontrados"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SemClassItem"
+        400:
+          description: "Ano inválido"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: "Ano 3000 não encontrado. Anos disponíveis: 1970-2023"
+        401:
+          description: "Não autorizado"
+        500:
+          description: "Erro interno no servidor"
+
+  # Sem classificação range
+  /processamento/semClass:
+    get:
+      tags: ["Processamento"]
+      summary: "Dados sem classificação por intervalo de anos"
+      description: "Retorna dados sem classificação específica para um intervalo de anos (inclusive)"
+      parameters:
+        - name: ano_inicio
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1970
+            maximum: 2023
+            example: 2010
+        - name: ano_fim
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1970
+            maximum: 2023
+            example: 2012
       security:
         - BearerAuth: []
       responses:
@@ -588,28 +585,28 @@ paths:
           description: "Erro interno no servidor"
 
   # GET COMERCIALIZAÇÃO POR INTERVALO DE ANOS
-  /comercializacao/{year_start}/{year_end}:
+  /comercializacao:
     get:
       tags: ["Comercialização"]
       summary: "Dados de comercialização por intervalo de anos"
       description: "Retorna dados de comercialização para um intervalo de anos (inclusive)"
       parameters:
-        - name: year_start
-          in: path
+        - name: ano_inicio
+          in: query
           required: true
           schema:
             type: integer
             minimum: 1970
             maximum: 2023
             example: 2010
-        - name: year_end
-          in: path
+        - name: ano_fim
+          in: query
           required: true
           schema:
             type: integer
             minimum: 1970
             maximum: 2023
-            example: 2020
+            example: 2012
       security:
         - BearerAuth: []
       responses:
@@ -635,6 +632,8 @@ paths:
           description: "Não autorizado"
         500:
           description: "Erro interno no servidor"
+
+  # GET IMPORTAÇÃO POR ANO      
   /importacao/vinhosMesa/{year}:
     get:
       tags: ["Importacao"]
@@ -670,6 +669,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET IMPORTAÇÃO POR INTERVALO DE ANOS
   /importacao/vinhosMesa:
     get:
       tags: ["Importacao"]
@@ -691,7 +691,7 @@ paths:
             type: integer
             minimum: 1970
             maximum: 2025
-            example: 2020
+            example: 2012
       responses:
         200:
           description: "Dados encontrados"
@@ -715,6 +715,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET IMPORTAÇÃO POR ANO
   /importacao/espumantes/{year}:
     get:
       tags: ["Importacao"]
@@ -750,6 +751,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET IMPORTAÇÃO POR INTERVALO DE ANOS
   /importacao/espumantes:
     get:
       tags: ["Importacao"]
@@ -771,7 +773,7 @@ paths:
             type: integer
             minimum: 1970
             maximum: 2025
-            example: 2020
+            example: 2012
       responses:
         200:
           description: "Dados encontrados"
@@ -795,6 +797,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET IMPORTAÇÃO POR ANO
   /importacao/uvasFrescas/{year}:
     get:
       tags: ["Importacao"]
@@ -830,6 +833,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET IMPORTAÇÃO POR INTERVALO DE ANOS
   /importacao/uvasFrescas:
     get:
       tags: ["Importacao"]
@@ -851,7 +855,7 @@ paths:
             type: integer
             minimum: 1970
             maximum: 2025
-            example: 2020
+            example: 2012
       responses:
         200:
           description: "Dados encontrados"
@@ -875,6 +879,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET IMPORTAÇÃO POR ANO
   /importacao/uvasPassas/{year}:
     get:
       tags: ["Importacao"]
@@ -910,6 +915,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET IMPORTAÇÃO POR INTERVALO DE ANOS
   /importacao/uvasPassas:
     get:
       tags: ["Importacao"]
@@ -931,7 +937,7 @@ paths:
             type: integer
             minimum: 1970
             maximum: 2025
-            example: 2020
+            example: 2012
       responses:
         200:
           description: "Dados encontrados"
@@ -955,6 +961,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET IMPORTAÇÃO POR ANO
   /importacao/sucoUva/{year}:
     get:
       tags: ["Importacao"]
@@ -990,6 +997,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET IMPORTAÇÃO POR INTERVALO DE ANOS
   /importacao/sucoUva:
     get:
       tags: ["Importacao"]
@@ -1011,7 +1019,7 @@ paths:
             type: integer
             minimum: 1970
             maximum: 2025
-            example: 2020
+            example: 2012
       responses:
         200:
           description: "Dados encontrados"
@@ -1035,6 +1043,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET EXPORTAÇÃO POR ANO
   /exportacao/vinhosMesa/{year}:
     get:
       tags: ["Exportacao"]
@@ -1070,6 +1079,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET EXPORTAÇÃO POR INTERVALO DE ANOS
   /exportacao/vinhosMesa:
     get:
       tags: ["Exportacao"]
@@ -1091,7 +1101,7 @@ paths:
             type: integer
             minimum: 1970
             maximum: 2025
-            example: 2020
+            example: 2012
       responses:
         200:
           description: "Dados encontrados"
@@ -1115,6 +1125,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET EXPORTAÇÃO POR ANO
   /exportacao/espumantes/{year}:
     get:
       tags: ["Exportacao"]
@@ -1150,6 +1161,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET EXPORTAÇÃO POR INTERVALO DE ANOS
   /exportacao/espumantes:
     get:
       tags: ["Exportacao"]
@@ -1171,7 +1183,7 @@ paths:
             type: integer
             minimum: 1970
             maximum: 2025
-            example: 2020
+            example: 2012
       responses:
         200:
           description: "Dados encontrados"
@@ -1195,6 +1207,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET EXPORTAÇÃO POR ANO
   /exportacao/uvasFrescas/{year}:
     get:
       tags: ["Exportacao"]
@@ -1230,6 +1243,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET EXPORTAÇÃO POR INTERVALO DE ANOS
   /exportacao/uvasFrescas:
     get:
       tags: ["Exportacao"]
@@ -1251,7 +1265,7 @@ paths:
             type: integer
             minimum: 1970
             maximum: 2025
-            example: 2020
+            example: 2012
       responses:
         200:
           description: "Dados encontrados"
@@ -1275,6 +1289,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET EXPORTAÇÃO POR ANO
   /exportacao/sucoUva/{year}:
     get:
       tags: ["Exportacao"]
@@ -1310,6 +1325,7 @@ paths:
       security:
         - BearerAuth: []
 
+  # GET EXPORTAÇÃO POR INTERVALO DE ANOS
   /exportacao/sucoUva:
     get:
       tags: ["Exportacao"]
@@ -1331,7 +1347,7 @@ paths:
             type: integer
             minimum: 1970
             maximum: 2025
-            example: 2020
+            example: 2012
       responses:
         200:
           description: "Dados encontrados"
