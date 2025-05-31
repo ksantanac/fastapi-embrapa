@@ -2,26 +2,24 @@
 
 Esta API foi desenvolvida como parte do **Tech Challenge da FIAP**. Seu objetivo é disponibilizar publicamente os dados de vitivinicultura do Brasil, a partir do site da **Embrapa**, permitindo análises e integração com futuros modelos de Machine Learning.
 
----
+
+## 🧑‍💻 Desenvolvido por
+
+- `Gabriel Fernandes - RM362747`
+- `Jean Franco do Nascimento - RM364515`
+- `Kauê Braz - RM362598`
+- `Kaue Santana - RM363168`
+- `Thomas Nícolas - RM362762`
+
 
 ## 🚀 Link da API em Produção
 
-Acesse a documentação interativa:  
+Acesse a documentação via Swagger:  
 👉 [https://embrapa-fiap.onrender.com/docs](https://embrapa-fiap.onrender.com/docs)
-
----
-
-## 🧠 Descrição do Projeto
-
-A API foi desenvolvida em **FastAPI** com autenticação JWT e deploy via **Render**, utilizando **Web Scraping** para coletar dados da [Embrapa Vitibrasil](http://vitibrasil.cnpuv.embrapa.br/). O banco de dados utilizado para armazenar os usuários é o **PostgreSQL**.
-
----
 
 ## 🧩 Arquitetura e Fluxo
 
 ![Diagrama de Arquitetura](dfd.png)
-
----
 
 ## 🔐 Autenticação
 
@@ -32,128 +30,307 @@ Inclua no cabeçalho da requisição:
 Authorization: Bearer <seu_token_aqui>
 ```
 
----
-
-## 📚 Endpoints da API
-
-### 🔑 Autenticação
-
-#### `POST /auth/createToken`  
-🔐 Gera tokens JWT de acesso e refresh.  
-📥 Parâmetros (JSON): `username`, `password`  
-📤 Retorno: `200 OK` com tokens ou `401 Unauthorized`
-
-#### `POST /auth/refreshToken`  
-🔁 Gera um novo token de acesso com o refresh token.  
-📥 Parâmetros (JSON): `refresh_token`  
-📤 Retorno: `200 OK` com novo token ou `401 Unauthorized`
-
----
-
-### 👤 Usuários
-
-#### `POST /auth/createUser`  
-👤 Cria um novo usuário.  
-📥 Parâmetros (JSON): `username`, `password`  
-📤 Retorno: `201 Created`, `400 Bad Request`, `500 Internal Server Error`
-
-#### `DELETE /auth/user/{user_id}`  
-🗑️ Remove um usuário específico.  
-📥 Parâmetros: `user_id` (na URL)  
-📤 Retorno: `200 OK`, `401 Unauthorized`, `404 Not Found`
-
----
-
-### 📊 Produção
-
-#### `GET /producao/{year}`  
-📅 Dados de produção de uvas por ano.  
-📥 Parâmetro: `year` (ex: 2020)  
-📤 Retorno: lista JSON de produtos e valores.
-
-#### `GET /producao/{year_start}/{year_end}`  
-📈 Produção em intervalo de anos.  
-📥 Parâmetros: `year_start`, `year_end`  
-📤 Retorno: lista JSON
-
----
-
-### 🧃 Processamento
-
-- `/processamento/viniferas/{year}`
-- `/processamento/americanas/{year}`
-- `/processamento/uvas/{year}`
-- `/processamento/semClass/{year}`  
-📊 Dados por tipo de uva e ano.
-
-- `/processamento/viniferas/{start}/{end}`
-- `/processamento/americanas/{start}/{end}`
-- `/processamento/uvas/{start}/{end}`
-- `/processamento/semClass/{start}/{end}`  
-📈 Intervalo de anos para cada categoria.
-
----
-
-### 💼 Comercialização
-
-#### `GET /comercializacao/{year}`  
-💰 Dados de comercialização por ano
-
-#### `GET /comercializacao/{start}/{end}`  
-💸 Comercialização por intervalo
-
----
-
-### 🌍 Importação
-
-- `/importacao/vinhosMesa/{year}`
-- `/importacao/espumantes/{year}`
-- `/importacao/uvasFrescas/{year}`
-- `/importacao/uvasPassas/{year}`
-- `/importacao/sucoUva/{year}`  
-📦 Dados por ano
-
-- `/importacao/vinhosMesa`
-- `/importacao/espumantes`
-- `/importacao/uvasFrescas`
-- `/importacao/uvasPassas`
-- `/importacao/sucoUva`  
-📦 Dados por intervalo (query: `ano_inicio`, `ano_fim`)
-
----
-
-### 🚢 Exportação
-
-- `/exportacao/vinhosMesa/{year}`
-- `/exportacao/espumantes/{year}`
-- `/exportacao/uvasFrescas/{year}`
-- `/exportacao/sucoUva/{year}`  
-📤 Dados por ano
-
-- `/exportacao/vinhosMesa`
-- `/exportacao/espumantes`
-- `/exportacao/uvasFrescas`
-- `/exportacao/sucoUva`  
-📤 Dados por intervalo (query: `ano_inicio`, `ano_fim`)
-
----
-
 ## 🧪 Testando a API
 
 Você pode utilizar o Swagger UI, **Postman** ou **Insomnia** para testar a API.  
 Não se esqueça de gerar e usar o token JWT antes de acessar os dados.
 
+## 📚 Documentação
+
+### Endpoints
+
+- [Autenticação](#autenticação)
+- [Usuários](#usuários)
+- [Produção](#produção)
+- [Processamento](#processamento)
+- [Comercialização](#comercialização)
+- [Importação](#importação)
+- [Exportação](#exportação)
+
 ---
 
-## 🧑‍💻 Desenvolvido por
+### Autenticação
 
-- `Kauê Braz - RM362598`
-- `Kaue Santana - RM363168`
+`POST` /auth/createToken
 
-- FIAP Tech Challenge 2025  
-Projeto acadêmico, sem fins lucrativos.
+Gera tokens de acesso e refresh
+
+#### Corpo da Requisição
+
+| campo | tipo | obrigatório | descrição
+|:---:|:---:|:---:|:---:|
+| `username`|string |✅| Nome de usuário.
+| `password`|string |✅| Senha de usuário.
+
+```js
+{
+  "username": "usuario_exemplo",
+  "password": "senha_secreta"
+}
+```
+
+#### Exemplo de resposta
+```js
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "bearer"
+}
+```
+
+#### Código de Status
+
+| código | descrição
+|---     | ---
+| `200`  | Tokens gerados com sucesso
+| `401`  | Credenciais inválidas
 
 ---
+
+`POST` /auth/create/refreshToken
+
+Renova access token
+
+#### Corpo da Requisição
+
+| campo | tipo | obrigatório | descrição
+|:---:|:---:|:---:|:---:|
+| `refresh_token`|string |✅| Token de acesso.
+
+```js
+{
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+#### Exemplo de resposta
+```js
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "bearer"
+}
+```
+
+#### Código de Status
+
+| código | descrição
+|---     | ---
+| `200`  | Novo access token gerado
+| `401`  | Refresh token inválido ou expirado
+
+---
+
+### Usuários
+
+`POST` /auth/createUser
+
+Registra um novo usuário no sistema
+
+
+#### Corpo da Requisição
+
+| campo | tipo | obrigatório | descrição
+|:---:|:---:|:---:|:---:|
+| `username`|string |✅| Nome de usuário.
+| `password`|string |✅| Senha de usuário.
+
+```js
+{
+  "username": "usuario_exemplo",
+  "password": "senha_secreta"
+}
+```
+
+#### Exemplo de resposta
+```js
+{
+  "username": "novo_usuariow",
+  "message": "User created successfully"
+}
+```
+
+#### Código de Status
+
+| código | descrição
+|---     | ---
+| `201`  | Usuário criado com sucesso
+| `400`  | Usuário já existe
+| `500`  | Erro interno no servidor
+
+---
+
+`DELETE` /auth/user/{user_id}
+
+Deleta um usuário existente (requer autenticação)
+
+#### Exemplo de resposta
+```js
+{
+  "message": "User deleted successfully"
+}
+```
+
+#### Código de Status
+
+| código | descrição
+|---     | ---
+| `200`  | Usuário removido com sucesso
+| `401`  | Não autorizado
+| `404`  | Usuário não encontrado
+
+### Produção
+
+`GET` /producao/{year}
+
+`GET` /producao
+
+Retorna uma lista de registros de produção agrícola filtrados pelo ano solicitado ou intervalo de anos
+
+#### Código de Status
+
+| código | descrição
+|---     | ---
+| `200`  | Dados de produção encontrados
+| `400`  | Intervalo inválido ou Ano inválido
+| `401`  | Não autorizado
+| `500`  | Erro interno no servidor
+
+---
+
+### Processamento
+
+`GET` /processamento/viniferas/{year}
+
+`GET` /processamento/viniferas
+
+Dados de processamento de uvas viníferas
+
+`GET` /processamento/americanas/{year}
+
+`GET` /processamento/americanas
+
+Dados de processamento de uvas americanas
+
+`GET` /processamento/uva/{year}
+
+`GET` /processamento/uva
+
+Dados de processamento de uvas de mesa
+
+`GET` /processamento/semClass/{year}
+
+`GET` /processamento/semClass
+
+Dados sem classificação
+
+#### Código de Status
+
+| código | descrição
+|---     | ---
+| `200`  | Dados encontrados
+| `400`  | Ano inválido
+| `500`  | Erro interno no servidor
+
+---
+
+### Comercialização
+
+
+`GET` /comercializacao/{year}
+
+`GET` /comercializacao
+
+Retorna dados de comercialização
+
+#### Código de Status
+
+| código | descrição
+|---     | ---
+| `200`  | Dados encontrados
+| `400`  | Intervalo inválido ou Ano inválido
+| `401`  | Não autorizado
+| `500`  | Erro interno no servidor
+
+---
+
+### Importação
+
+`GET` `/importacao/vinhosMesa/{year}`
+
+`GET` `/importacao/vinhosMesa`
+
+Dados de importação de vinhos de mesa
+
+`GET` `/importacao/espumantes/{year}`
+
+`GET` `/importacao/espumantes`
+
+Dados de importação de espumantes
+
+`GET` `/importacao/uvasFrescas/{year}`
+
+`GET` `/importacao/uvasFrescas`
+
+Dados de importação de uvas frescas
+
+`GET` `/importacao/uvasPassas/{year}`
+
+`GET` `/importacao/uvasPassas`
+
+Dados de importação de uvas passas
+
+`GET` `/importacao/sucoUva/{year}`
+
+`GET` `/importacao/sucoUva`
+
+Dados de importação de suco de uva
+
+#### Código de Status
+
+| código | descrição
+|---     | ---
+| `200`  | Dados encontrados
+| `400`  | Intervalo inválido ou Ano inválido
+| `401`  | Não autorizado
+| `500`  | Erro interno no servidor
+
+---
+
+### Exportação
+
+`GET` `/exportacao/vinhosMesa/{year}`
+
+`GET` `/exportacao/vinhosMesa`
+
+Dados de exportação de vinhos de mesa por intervalo
+
+`GET` `/exportacao/espumantes/{year}`
+
+`GET` `/exportacao/espumantes`
+
+Dados de exportação de espumantes por intervalo
+
+`GET` `/exportacao/uvasFrescas/{year}`
+
+`GET` `/exportacao/uvasFrescas`
+
+Dados de exportação de uvas frescas por intervalo
+
+`GET` `/exportacao/sucoUva/{year}`
+
+`GET` `/exportacao/sucoUva`
+
+Dados de exportação de suco de uva por intervalo
+
+#### Código de Status
+
+| código | descrição
+|---     | ---
+| `200`  | Dados encontrados
+| `400`  | Intervalo inválido ou Ano inválido
+| `401`  | Não autorizado
+| `500`  | Erro interno no servidor
 
 ## 📄 Licença
 
